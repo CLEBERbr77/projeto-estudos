@@ -4,7 +4,6 @@ class SessoesDeEstudo extends Model {
   static init(sequelize) {
     super.init(
       {
-        name: DataTypes.STRING,
         observacoes: DataTypes.STRING,
         status: DataTypes.ENUM("active", "inactive"),
       },

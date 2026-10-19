@@ -4,7 +4,6 @@ class Conteudo extends Model {
   static init(sequelize) {
     super.init(
       {
-        name: DataTypes.STRING,
         descricao: DataTypes.STRING,
         status: DataTypes.ENUM("active", "inactive"),
       },
