@@ -1,16 +1,16 @@
 const { Model, DataTypes } = require("sequelize");
 
-class Contact extends Model {
+class SessoesDeEstudo extends Model {
   static init(sequelize) {
     super.init(
       {
         name: DataTypes.STRING,
-        observascoes: DataTypes.STRING,
+        observacoes: DataTypes.STRING,
         status: DataTypes.ENUM("active", "inactive"),
       },
       {
         sequelize,
-        tableName: "conteudos",
+        tableName: "sessoesdeestudo",
         timestamps: true,
         underscored: true,
       },
@@ -32,4 +32,4 @@ class Contact extends Model {
   }
 }
 
-module.exports = Contact;
+module.exports = SessoesDeEstudo;

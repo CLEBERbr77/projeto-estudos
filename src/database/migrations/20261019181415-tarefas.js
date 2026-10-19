@@ -48,6 +48,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable("tarefas");
+    return queryInterface.dropTable("tarefas", "status");
   },
 };
