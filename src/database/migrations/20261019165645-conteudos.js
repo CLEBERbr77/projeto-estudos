@@ -1,46 +1,27 @@
-module.exports = {
-  up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable("conteudos", {
-      id: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
+const { Model, DataTypes } = require("sequelize");
+
+class Conteudo extends Model {
+  static init(sequelize) {
+    super.init(
+      {
+        descricao: DataTypes.STRING,
+        status: DataTypes.ENUM("active", "inactive"),
       },
-      disciplina_Id: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        references: { model: "disciplinas", key: "id" },
-        onUpdate: "CASCADE",
-        onDelete: "CASCADE",
+      {
+        sequelize,
+        tableName: "conteudos",
+        timestamps: true,
+        underscored: true,
       },
-      titulo: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        unique: true,
-      },
-      descricao: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        unique: true,
-      },
-      status: {
-        type: Sequelize.ENUM("active", "inactive"),
-        allowNull: false,
-        defaultValue: "active",
-      },
-      ordem: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        defaultValue: 0,
-      },
-      DataConclusao: {
-        type: Sequelize.DATE,
-        allowNull: false,
-      },
+    );
+  }
+
+  static associate(models) {
+    this.belongsTo(models.disciplina, {
+      foreignKey: "disciplina_Id",
+      as: "disciplinas",
     });
-  },
-  down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable("conteudos", "status");
-  },
-};
+  }
+}
+
+module.exports = Conteudo;
