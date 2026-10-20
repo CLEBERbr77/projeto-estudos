@@ -7,14 +7,14 @@ module.exports = {
         autoIncrement: true,
         primaryKey: true,
       },
-      disciplina_Id: {
+      disciplina_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: { model: "disciplinas", key: "id" },
         onUpdate: "CASCADE",
         onDelete: "CASCADE",
       },
-      conteudo_Id: {
+      conteudo_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: { model: "conteudos", key: "id" },
@@ -24,17 +24,14 @@ module.exports = {
       titulo: {
         type: Sequelize.STRING,
         allowNull: false,
-        unique: true,
       },
       descricao: {
         type: Sequelize.STRING,
-        allowNull: false,
-        unique: true,
+        allowNull: true,
       },
       prazo: {
         type: Sequelize.DATE,
         allowNull: false,
-        defaultValue: 0,
       },
       status: {
         type: Sequelize.ENUM("active", "inactive"),
@@ -45,9 +42,17 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
+      created_at: {
+        type: Sequelize.DATE,
+        allowNull: false,
+      },
+      updated_at: {
+        type: Sequelize.DATE,
+        allowNull: false,
+      },
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable("tarefas", "status");
+    return queryInterface.dropTable("tarefas");
   },
 };

@@ -4,10 +4,10 @@ class Tarefa extends Model {
   static init(sequelize) {
     super.init(
       {
-        name: DataTypes.STRING,
-        descricao: DataTypes.STRING,
-        status: DataTypes.ENUM("active", "inactive"),
         titulo: DataTypes.STRING,
+        descricao: DataTypes.STRING,
+        prazo: DataTypes.DATE,
+        status: DataTypes.ENUM("active", "inactive"),
         prioridade: DataTypes.STRING,
       },
       {
@@ -18,13 +18,14 @@ class Tarefa extends Model {
       },
     );
   }
+
   static associate(models) {
     this.belongsTo(models.disciplina, {
-      foreignKey: "disciplina_Id",
+      foreignKey: "disciplina_id",
       as: "disciplina",
     });
     this.belongsTo(models.conteudo, {
-      foreignKey: "conteudo_Id",
+      foreignKey: "conteudo_id",
       as: "conteudo",
     });
   }

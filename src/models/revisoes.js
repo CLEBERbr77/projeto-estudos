@@ -1,11 +1,13 @@
 const { Model, DataTypes } = require("sequelize");
 
-class revisoes extends Model {
+class Revisoes extends Model {
   static init(sequelize) {
     super.init(
       {
-        observacoes: DataTypes.STRING,
+        dataAgendada: DataTypes.DATE,
+        dataRealizada: DataTypes.DATE,
         status: DataTypes.ENUM("active", "inactive"),
+        observacoes: DataTypes.STRING,
       },
       {
         sequelize,
@@ -15,12 +17,13 @@ class revisoes extends Model {
       },
     );
   }
+
   static associate(models) {
     this.belongsTo(models.conteudo, {
-      foreignKey: "conteudo_Id",
+      foreignKey: "conteudo_id",
       as: "conteudo",
     });
   }
 }
 
-module.exports = revisoes;
+module.exports = Revisoes;

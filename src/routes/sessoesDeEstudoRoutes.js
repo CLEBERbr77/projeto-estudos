@@ -7,6 +7,6 @@ routes.get('/sessoes', sessoesController.listar);
 routes.post('/sessoes', sessoesController.criar);
 routes.get('/sessoes/:id', sessoesController.buscarPorId);
 routes.put('/sessoes/:id', sessoesController.atualizar);
-routes.destroy('/sessoes/:id', sessoesController.deletar);
+routes.delete('/sessoes/:id', sessoesController.deletar);
 
 module.exports = routes;

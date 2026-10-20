@@ -7,6 +7,6 @@ routes.get('/simulados', simuladoController.listar);
 routes.post('/simulados', simuladoController.criar);
 routes.get('/simulados/:id', simuladoController.buscarPorId);
 routes.put('/simulados/:id', simuladoController.atualizar);
-routes.destroy('/simulados/:id', simuladoController.deletar);
+routes.delete('/simulados/:id', simuladoController.deletar);
 
 module.exports = routes;

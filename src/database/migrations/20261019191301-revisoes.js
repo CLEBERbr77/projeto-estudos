@@ -7,22 +7,20 @@ module.exports = {
         autoIncrement: true,
         primaryKey: true,
       },
-      conteudo_Id: {
+      conteudo_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: { model: "conteudos", key: "id" },
         onUpdate: "CASCADE",
         onDelete: "CASCADE",
       },
-      dataAgendada: {
+      data_agendada: {
         type: Sequelize.DATE,
         allowNull: false,
-        unique: true,
       },
-      dataRealizada: {
+      data_realizada: {
         type: Sequelize.DATE,
-        allowNull: false,
-        unique: true,
+        allowNull: true,
       },
       status: {
         type: Sequelize.ENUM("active", "inactive"),
@@ -31,11 +29,19 @@ module.exports = {
       },
       observacoes: {
         type: Sequelize.STRING,
+        allowNull: true,
+      },
+      created_at: {
+        type: Sequelize.DATE,
+        allowNull: false,
+      },
+      updated_at: {
+        type: Sequelize.DATE,
         allowNull: false,
       },
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable("revisoes", "status");
+    return queryInterface.dropTable("revisoes");
   },
 };
