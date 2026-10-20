@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const conteudoController = require('../controllers/conteudoController');
+const conteudoController = require('../controllers/conteudosController');
 
 const routes = Router();
 
