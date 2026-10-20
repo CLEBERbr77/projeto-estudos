@@ -77,7 +77,7 @@ module.exports = {
   },
 
   //Remove em definitivo um registro de revisão da base de dados DELETE /revisoes/:id
-  async deletar(req, res) {
+  async destroy(req, res) {
     try {
       const { id } = req.params;
       const revisao = await Revisoes.findByPk(id);

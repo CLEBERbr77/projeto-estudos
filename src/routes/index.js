@@ -2,18 +2,18 @@ const { Router } = require('express');
 
 const disciplinaRoutes = require('./disciplinaRoutes');
 const conteudoRoutes = require('./conteudoRoutes');
-const tarefaRoutes = require('./tarefaRoutes');
-const revisaoRoutes = require('./revisaoRoutes');
+const tarefasRoutes = require('./tarefasRoutes');
+const revisoesRoutes = require('./revisoesRoutes');
 const sessoesRoutes = require('./sessoesDeEstudoRoutes');
 const simuladoRoutes = require('./simuladoRoutes');
-const resultadoSimuladoRoutes = require('./resultadoDosSimuladoRoutes');
+const resultadoSimuladoRoutes = require('./resultadoDosSimulados');
 
 const routes = Router();
 
 routes.use(disciplinaRoutes);
 routes.use(conteudoRoutes);
-routes.use(tarefaRoutes);
-routes.use(revisaoRoutes);
+routes.use(tarefasRoutes);
+routes.use(revisoesRoutes);
 routes.use(sessoesRoutes);
 routes.use(simuladoRoutes);
 routes.use(resultadoSimuladoRoutes);

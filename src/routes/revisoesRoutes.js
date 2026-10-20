@@ -7,6 +7,6 @@ routes.get('/revisoes', revisaoController.listar);
 routes.post('/revisoes', revisaoController.criar);
 routes.get('/revisoes/:id', revisaoController.buscarPorId);
 routes.put('/revisoes/:id', revisaoController.atualizar);
-routes.delete('/revisoes/:id', revisaoController.deletar);
+routes.delete('/revisoes/:id', revisaoController.destroy);
 
 module.exports = routes;

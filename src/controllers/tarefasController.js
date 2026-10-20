@@ -1,4 +1,4 @@
-const Tarefa = require('../models/tarefa');
+const Tarefa = require('../models/tarefas');
 const Disciplina = require('../models/disciplina');
 const Conteudo = require('../models/conteudo');
 

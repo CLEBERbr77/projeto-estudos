@@ -1,4 +1,4 @@
-const ResultadoDosSimulado = require('../models/resultadodosimulado');
+const ResultadoDosSimulado = require('../models/resultadodossimulado');
 const Simulado = require('../models/simulado');
 const Disciplina = require('../models/disciplina');
 const { destroy } = require('./disciplinaController');
