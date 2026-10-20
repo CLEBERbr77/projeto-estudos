@@ -57,7 +57,7 @@ module.exports = {
   },
 
   //Remove uma disciplina do banco de dados DELETE /disciplinas/:id
-  async deletar(req, res) {
+  async destroy(req, res) {
     try {
       const { id } = req.params;
       const disciplina = await Disciplina.findByPk(id);

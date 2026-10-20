@@ -88,7 +88,7 @@ module.exports = {
   },
 
   //Deleta um registro de sessão de estudo DELETE /sessoes/:id
-  async deletar(req, res) {
+  async destroy(req, res) {
     try {
       const { id } = req.params;
       const sessao = await SessoesDeEstudo.findByPk(id);

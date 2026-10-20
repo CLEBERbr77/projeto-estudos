@@ -6,7 +6,7 @@ class Simulado extends Model {
       {
         titulo: DataTypes.STRING,
         dataRealizacao: DataTypes.DATE,
-        quantidadedeQuestoes: DataTypes.INTEGER,
+        quantidadeDeQuestoes: DataTypes.INTEGER,
         observacoes: DataTypes.STRING,
       },
       {

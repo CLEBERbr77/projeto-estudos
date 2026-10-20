@@ -7,34 +7,50 @@ module.exports = {
         autoIncrement: true,
         primaryKey: true,
       },
-      simulado_Id: {
+      simulado_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: { model: "simulados", key: "id" },
         onUpdate: "CASCADE",
         onDelete: "CASCADE",
       },
-      disciplina_Id: {
+      disciplina_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: { model: "disciplinas", key: "id" },
         onUpdate: "CASCADE",
         onDelete: "CASCADE",
       },
-      questoesTotal: {
+      titulo: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      questoes_total: {
         type: Sequelize.INTEGER,
         allowNull: false,
         defaultValue: 0,
       },
-      quatidadeAcertos: {
+      quatidade_acertos: {
         type: Sequelize.INTEGER,
         allowNull: false,
         defaultValue: 0,
       },
-      questoesErradas: {
+      questones_erradas: {
         type: Sequelize.INTEGER,
         allowNull: false,
         defaultValue: 0,
+      },
+      observacoes: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      created_at: {
+        type: Sequelize.DATE,
+        allowNull: false,
+      },
+      updated_at: {
+        type: Sequelize.DATE,
+        allowNull: false,
       },
     });
   },

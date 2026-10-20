@@ -77,7 +77,7 @@ module.exports = {
   },
 
  //Remove de forma definitiva um conteúdo do banco de dados DELETE /conteudos/:id
-  async deletar(req, res) {
+  async destroy(req, res) {
     try {
       const { id } = req.params;
       const conteudo = await Conteudo.findByPk(id);

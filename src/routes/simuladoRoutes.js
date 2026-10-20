@@ -1,0 +1,12 @@
+const { Router } = require('express');
+const simuladoController = require('../controllers/simuladoController');
+
+const routes = Router();
+
+routes.get('/simulados', simuladoController.listar);
+routes.post('/simulados', simuladoController.criar);
+routes.get('/simulados/:id', simuladoController.buscarPorId);
+routes.put('/simulados/:id', simuladoController.atualizar);
+routes.destroy('/simulados/:id', simuladoController.deletar);
+
+module.exports = routes;
