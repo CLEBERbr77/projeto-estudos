@@ -4,8 +4,10 @@ class SessoesDeEstudo extends Model {
   static init(sequelize) {
     super.init(
       {
+        inicioEm: DataTypes.DATE,
+        fimEm: DataTypes.DATE,
+        duracaoSegundos: DataTypes.INTEGER,
         observacoes: DataTypes.STRING,
-        status: DataTypes.ENUM("active", "inactive"),
       },
       {
         sequelize,
@@ -17,16 +19,14 @@ class SessoesDeEstudo extends Model {
   }
 
   static associate(models) {
-    // Relação com a disciplina
     this.belongsTo(models.disciplina, {
       foreignKey: "disciplina_Id",
-      as: "disciplina", // Singular, pois cada sessão pertence a uma disciplina
+      as: "disciplina",
     });
 
-    // Relação com o conteúdo
     this.belongsTo(models.conteudo, {
       foreignKey: "conteudo_Id",
-      as: "conteudo", // Singular, pois cada sessão pertence a um conteúdo específico
+      as: "conteudo",
     });
   }
 }

@@ -21,26 +21,34 @@ module.exports = {
         onUpdate: "CASCADE",
         onDelete: "CASCADE",
       },
-      inicioEm: {
+      inicio_em: {
         type: Sequelize.DATE,
         allowNull: false,
       },
-      fimEm: {
+      fim_em: {
         type: Sequelize.DATE,
         allowNull: false,
       },
-      duracaoSegundos: {
+      duracao_segundos: {
         type: Sequelize.INTEGER,
         allowNull: false,
         defaultValue: 0,
       },
       observacoes: {
         type: Sequelize.STRING,
+        allowNull: true,
+      },
+      created_at: {
+        type: Sequelize.DATE,
+        allowNull: false,
+      },
+      updated_at: {
+        type: Sequelize.DATE,
         allowNull: false,
       },
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable("conteudos", "status");
+    return queryInterface.dropTable("sessoesdeestudo");
   },
 };
