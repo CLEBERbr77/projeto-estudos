@@ -2,7 +2,6 @@ const User = require("../models/user");
 const { Op } = require("sequelize");
 const { parseISO } = require("date-fns");
 const Yup = require("yup");
-const bcrypt = require("bcrypt");
 
 class UsersController {
   async index(req, res) {
@@ -65,7 +64,7 @@ class UsersController {
     const user = await User.findByPk(req.params.id, {
       attributes: { exclude: ["password_hash"] },
     });
-    
+
     if (!user) {
       return res.status(404).json({ error: "Usuário não encontrado" });
     }
@@ -79,8 +78,13 @@ class UsersController {
       email: Yup.string().email().required(),
       provider: Yup.boolean(),
       password: Yup.string().min(8).required(),
-      passwordConfirmation: Yup.string().when("password", (password, field) => {
-        return password ? field.required().oneOf([Yup.ref("password")]) : field;
+      passwordConfirmation: Yup.string().when("password", {
+        is: (password) => !!password,
+        then: (schema) =>
+          schema
+            .required("A confirmação da senha é obrigatória")
+            .oneOf([Yup.ref("password")], "As senhas não coincidem"),
+        otherwise: (schema) => schema,
       }),
     });
 
@@ -116,13 +120,20 @@ class UsersController {
       provider: Yup.boolean(),
       oldPassword: Yup.string().min(8),
       password: Yup.string()
-        .min(8)
-        .when("oldPassword", (oldPassword, field) =>
-          oldPassword ? field.required() : field,
-        ),
-      passwordConfirmation: Yup.string().when("password", (password, field) =>
-        password ? field.required().oneOf([Yup.ref("password")]) : field,
-      ),
+        .min(8, "A senha deve ter pelo menos 8 caracteres")
+        .when("oldPassword", {
+          is: (oldPassword) => !!oldPassword,
+          then: (schema) => schema.required("A nova senha é obrigatória"),
+          otherwise: (schema) => schema,
+        }),
+      passwordConfirmation: Yup.string().when("password", {
+        is: (password) => !!password,
+        then: (schema) =>
+          schema
+            .required("A confirmação da senha é obrigatória")
+            .oneOf([Yup.ref("password")], "As senhas não coincidem"),
+        otherwise: (schema) => schema,
+      }),
     });
 
     try {
@@ -171,7 +182,7 @@ class UsersController {
     if (!user) {
       return res.status(404).json({ error: "Usuário não encontrado" });
     }
-    
+
     await user.destroy();
     return res.status(204).send();
   }
