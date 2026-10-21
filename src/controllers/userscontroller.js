@@ -1,11 +1,9 @@
 const User = require("../models/user");
-const Customer = require("../models/customer");
 const { Op } = require("sequelize");
 const { parseISO } = require("date-fns");
-const model = require("../models/user");
 const Yup = require("yup");
 
-class userscontroller {
+class UsersController {
   async index(req, res) {
     const {
       name,
@@ -46,9 +44,10 @@ class userscontroller {
     if (sort) {
       order = sort.split(",").map((item) => item.split(":"));
     }
+
     try {
       const data = await User.findAll({
-        attributes: { exclude: ["password", "password_hash"] },
+        attributes: { exclude: ["password_hash"] },
         where,
         order,
         limit,
@@ -63,19 +62,21 @@ class userscontroller {
 
   async show(req, res) {
     const user = await User.findByPk(req.params.id, {
-      include: [User],
+      attributes: { exclude: ["password_hash"] },
     });
+    
     if (!user) {
-      return res.status(404).json();
+      return res.status(404).json({ error: "Usuário não encontrado" });
     }
 
     return res.json(user);
   }
+
   async create(req, res) {
     const schema = Yup.object().shape({
       name: Yup.string().required(),
       email: Yup.string().email().required(),
-      status: Yup.string().uppercase(),
+      provider: Yup.boolean(),
       password: Yup.string().min(8).required(),
       passwordConfirmation: Yup.string().when("password", (password, field) => {
         return password ? field.required().oneOf([Yup.ref("password")]) : field;
@@ -91,11 +92,11 @@ class userscontroller {
 
     try {
       const user = await User.create(req.body);
-      console.log("USER CRIADO:", user.toJSON());
       return res.status(201).json({
         id: user.id,
         name: user.name,
         email: user.email,
+        provider: user.provider,
         createdAt: user.createdAt,
         updatedAt: user.updatedAt,
       });
@@ -108,13 +109,10 @@ class userscontroller {
   }
 
   async update(req, res) {
-    console.log("req.userId:", req.userId);
-    console.log("req.user:", req.user);
-    console.log("req.params:", req.params);
-    console.log("req.body:", req.body);
     const schema = Yup.object().shape({
       name: Yup.string(),
       email: Yup.string().email(),
+      provider: Yup.boolean(),
       oldPassword: Yup.string().min(8),
       password: Yup.string()
         .min(8)
@@ -134,14 +132,12 @@ class userscontroller {
 
     const { email, oldPassword } = req.body;
 
-    // Assume que o usuário está autenticado (middleware seta req.userId)
     const user = await User.findByPk(req.params.id);
 
     if (!user) {
       return res.status(404).json({ error: "Usuário não encontrado" });
     }
 
-    // Se tá mudando o email, verifica se já não está em uso
     if (email && email !== user.email) {
       const emailExists = await User.findOne({ where: { email } });
       if (emailExists) {
@@ -149,7 +145,6 @@ class userscontroller {
       }
     }
 
-    // Se tá mudando a senha, verifica a senha antiga
     if (oldPassword && !(await user.checkPassword(oldPassword))) {
       return res.status(401).json({ error: "Senha antiga não confere" });
     }
@@ -161,6 +156,7 @@ class userscontroller {
         id: user.id,
         name: user.name,
         email: user.email,
+        provider: user.provider,
         updatedAt: user.updatedAt,
       });
     } catch (err) {
@@ -172,11 +168,12 @@ class userscontroller {
     const user = await User.findByPk(req.params.id);
 
     if (!user) {
-      return res.status(404).json();
+      return res.status(404).json({ error: "Usuário não encontrado" });
     }
+    
     await user.destroy();
-    return res.status(204).json();
+    return res.status(204).send();
   }
 }
 
-module.exports = new userscontroller();
+module.exports = new UsersController();
