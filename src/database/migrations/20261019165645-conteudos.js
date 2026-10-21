@@ -1,27 +1,44 @@
-const { Model, DataTypes } = require("sequelize");
-
-class Conteudo extends Model {
-  static init(sequelize) {
-    super.init(
-      {
-        descricao: DataTypes.STRING,
-        status: DataTypes.ENUM("active", "inactive"),
+module.exports = {
+  up: (queryInterface, Sequelize) => {
+    return queryInterface.createTable("conteudos", {
+      id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
       },
-      {
-        sequelize,
-        tableName: "conteudos",
-        timestamps: true,
-        underscored: true,
+      disciplinaId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: { model: "disciplinas", key: "id" },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
       },
-    );
-  }
-
-  static associate(models) {
-    this.belongsTo(models.disciplina, {
-      foreignKey: "disciplina_Id",
-      as: "disciplinas",
+      titulo: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      descricao: {
+        type: Sequelize.TEXT,
+        allowNull: true,
+      },
+      status: {
+        type: Sequelize.ENUM("ativo", "inativo"),
+        allowNull: false,
+        defaultValue: "ativo",
+      },
+      created_at: {
+        type: Sequelize.DATE,
+        allowNull: false,
+      },
+      updated_at: {
+        type: Sequelize.DATE,
+        allowNull: false,
+      },
     });
-  }
-}
+  },
 
-module.exports = Conteudo;
+  down: (queryInterface, Sequelize) => {
+    return queryInterface.dropTable("conteudos");
+  },
+};
