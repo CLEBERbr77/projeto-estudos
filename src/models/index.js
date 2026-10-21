@@ -1,8 +1,6 @@
 const Sequelize = require("sequelize");
 const config = require("../config/database");
-const Customer = require("../models/customer");
-const Contact = require("../models/contact");
-const User = require("../models/user");
+const User = require("../models/User");
 
 console.log("User    :", typeof User, User && typeof User.init);
 
