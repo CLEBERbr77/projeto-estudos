@@ -1,7 +1,14 @@
 const Yup = require("yup");
 const User = require("../models/User");
 
-const publicFields = ["id", "name", "email", "provider", "created_at", "updated_at"];
+const publicFields = [
+  "id",
+  "name",
+  "email",
+  "provider",
+  "created_at",
+  "updated_at",
+];
 
 class UserController {
   async index(req, res) {
@@ -10,7 +17,9 @@ class UserController {
   }
 
   async show(req, res) {
-    const user = await User.findByPk(req.params.id, { attributes: publicFields });
+    const user = await User.findByPk(req.params.id, {
+      attributes: publicFields,
+    });
 
     if (!user) {
       return res.status(404).json({ error: "Usuário não encontrado." });
@@ -35,7 +44,9 @@ class UserController {
     try {
       await schema.validate(req.body, { abortEarly: false });
     } catch (err) {
-      return res.status(400).json({ error: "Falha na validação.", messages: err.errors });
+      return res
+        .status(400)
+        .json({ error: "Falha na validação.", messages: err.errors });
     }
 
     const userExists = await User.findOne({ where: { email: req.body.email } });
@@ -71,7 +82,9 @@ class UserController {
     try {
       await schema.validate(req.body, { abortEarly: false });
     } catch (err) {
-      return res.status(400).json({ error: "Falha na validação.", messages: err.errors });
+      return res
+        .status(400)
+        .json({ error: "Falha na validação.", messages: err.errors });
     }
 
     const user = await User.findByPk(req.params.id);
