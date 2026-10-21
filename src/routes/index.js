@@ -7,9 +7,11 @@ const revisoesRoutes = require('./revisoesRoutes');
 const sessoesRoutes = require('./sessoesDeEstudoRoutes');
 const simuladoRoutes = require('./simuladoRoutes');
 const resultadoSimuladoRoutes = require('./resultadoDosSimulados');
+const usersRoutes = require('./userRoutes');
 
 const routes = Router();
 
+routes.use(usersRoutes);
 routes.use(disciplinaRoutes);
 routes.use(conteudoRoutes);
 routes.use(tarefasRoutes);

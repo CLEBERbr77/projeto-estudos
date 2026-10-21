@@ -2,6 +2,7 @@ const User = require("../models/user");
 const { Op } = require("sequelize");
 const { parseISO } = require("date-fns");
 const Yup = require("yup");
+const bcrypt = require("bcrypt");
 
 class UsersController {
   async index(req, res) {
