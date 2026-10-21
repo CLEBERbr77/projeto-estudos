@@ -1,7 +1,14 @@
 const Yup = require("yup");
 const User = require("../models/User");
 
-const publicFields = ["id", "name", "email", "provider", "created_at", "updated_at"];
+const publicFields = [
+  "id",
+  "name",
+  "email",
+  "provider",
+  "created_at",
+  "updated_at",
+];
 
 class UserController {
   async index(req, res) {
@@ -10,7 +17,9 @@ class UserController {
   }
 
   async show(req, res) {
-    const user = await User.findByPk(req.params.id, { attributes: publicFields });
+    const user = await User.findByPk(req.params.id, {
+      attributes: publicFields,
+    });
 
     if (!user) {
       return res.status(404).json({ error: "Usuário não encontrado." });
@@ -29,13 +38,15 @@ class UserController {
       password: Yup.string()
         .min(6, "A senha deve ter no mínimo 6 caracteres.")
         .required("A senha é obrigatória."),
-      provider: Yup.boolean(),
+      provider: Yup.boolean().default(false),
     });
 
     try {
       await schema.validate(req.body, { abortEarly: false });
     } catch (err) {
-      return res.status(400).json({ error: "Falha na validação.", messages: err.errors });
+      return res
+        .status(400)
+        .json({ error: "Falha na validação.", messages: err.errors });
     }
 
     const userExists = await User.findOne({ where: { email: req.body.email } });
@@ -44,11 +55,15 @@ class UserController {
       return res.status(400).json({ error: "E-mail já cadastrado." });
     }
 
-    const { id, name, email, provider } = await User.create(req.body);
-
-    return res.status(201).json({ id, name, email, provider });
+    try {
+      const { id, name, email, provider } = await User.create(req.body);
+      return res.status(201).json({ id, name, email, provider });
+    } catch (error) {
+      return res
+        .status(500)
+        .json({ error: "Erro ao criar usuário.", details: error.message });
+    }
   }
-
   async update(req, res) {
     const schema = Yup.object().shape({
       name: Yup.string().trim(),
@@ -71,7 +86,9 @@ class UserController {
     try {
       await schema.validate(req.body, { abortEarly: false });
     } catch (err) {
-      return res.status(400).json({ error: "Falha na validação.", messages: err.errors });
+      return res
+        .status(400)
+        .json({ error: "Falha na validação.", messages: err.errors });
     }
 
     const user = await User.findByPk(req.params.id);
