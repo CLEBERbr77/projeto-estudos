@@ -1,3 +1,4 @@
+require('../models/index')
 const { Router } = require("express");
 
 const disciplinaRoutes = require("./disciplinaRoutes");
