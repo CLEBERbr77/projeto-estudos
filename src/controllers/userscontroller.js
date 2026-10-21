@@ -41,7 +41,7 @@ class UsersController {
       if (updatedAfter) where.updatedAt[Op.gte] = parseISO(updatedAfter);
     }
 
-    if (sort) {
+    if (sort && typeof sort === "string") {
       order = sort.split(",").map((item) => item.split(":"));
     }
 
