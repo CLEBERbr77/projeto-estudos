@@ -8,6 +8,7 @@ class User extends Model {
         name: DataTypes.STRING,
         email: DataTypes.STRING,
         password_hash: DataTypes.STRING,
+        provider: DataTypes.BOOLEAN,
         password: DataTypes.VIRTUAL,
       },
       {
