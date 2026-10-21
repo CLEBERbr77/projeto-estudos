@@ -15,7 +15,6 @@ class Conteudo extends Model {
       },
     );
   }
-
   static associate(models) {
     this.belongsTo(models.disciplina, {
       foreignKey: "disciplina_Id",
