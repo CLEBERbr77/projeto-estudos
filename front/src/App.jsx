@@ -1,11 +1,11 @@
 import './App.css'
 
-import FormDisciplina from './components/formDisciplina/formDisciplina'
+import Timer from './components/timer/timer'
 
 function App() {
   return (
     <>
-      <FormDisciplina />
+      <Timer />
     </>
   )
 }
