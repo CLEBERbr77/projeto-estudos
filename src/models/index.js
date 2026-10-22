@@ -1,6 +1,6 @@
 const Sequelize = require("sequelize");
 const config = require("../config/database");
-const User = require("../models/User");
+const User = require("../models/user");
 
 console.log("User    :", typeof User, User && typeof User.init);
 
