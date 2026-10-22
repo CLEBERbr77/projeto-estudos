@@ -1,5 +1,5 @@
 const Yup = require("yup");
-const User = require("../models/ser");
+const User = require("../models/user");
 const jwt = require("jsonwebtoken");
 
 const JWT_SECRET = process.env.JWT_SECRET || "seu_segredo_jwt";
@@ -159,7 +159,7 @@ class UserController {
 
     await user.update(req.body); 
 
-    return res.json(formatResponse(user));
+    return res.json(user);
   }
 
   async delete(req, res) {
