@@ -1,5 +1,8 @@
 const Yup = require("yup");
-const User = require("../models/User");
+const User = require("../models/ser");
+const jwt = require("jsonwebtoken");
+
+const JWT_SECRET = process.env.JWT_SECRET || "seu_segredo_jwt";
 
 const publicFields = [
   "id",
@@ -10,10 +13,24 @@ const publicFields = [
   "updated_at",
 ];
 
+// função auxiliar, formata o ID e retorna apenas os campos públicos (excluindo a senha) 
+const formatUserResponse = (user) => {
+  const json = user.toJSON ? user.toJSON() : user;
+  return {
+    id: String(json.id).padStart(3, "0"),
+    name: json.name,
+    email: json.email,
+    provider: json.provider,
+    created_at: json.created_at,
+    updated_at: json.updated_at,
+  };
+};
+
 class UserController {
   async index(req, res) {
     const users = await User.findAll({ attributes: publicFields });
-    return res.json(users);
+    const formattedUsers = users.map(formatUserResponse);
+    return res.json(formattedUsers);
   }
 
   async show(req, res) {
@@ -25,7 +42,7 @@ class UserController {
       return res.status(404).json({ error: "Usuário não encontrado." });
     }
 
-    return res.json(user);
+    return res.json(formatUserResponse(user));
   }
 
   async store(req, res) {
@@ -56,14 +73,44 @@ class UserController {
     }
 
     try {
-      const { id, name, email, provider } = await User.create(req.body);
-      return res.status(201).json({ id, name, email, provider });
+      const user = await  User.create(req.body);
+      return res.status(201).json(formatUserResponse(user));
     } catch (error) {
       return res
         .status(500)
         .json({ error: "Erro ao criar usuário.", details: error.message });
     }
   }
+// método de login para a autenticação via jwt 
+  async login(req, res) {
+    const schema = Yup.object().shape({
+      email: Yup.string().email("E-mail inválido.").required("O e-mail é obrigatório."),
+      password: Yup.string().required("A senha é obrigatória."),
+    });
+
+    try {
+      await schema.validate(req.body, { abortEarly: false });
+    } catch (err) {
+      return res.status(400).json({ error: "Falha na validação.", messages: err.errors });
+    }
+
+    const { email, password } = req.body;
+
+    const user = await User.findOne({ where: { email } });
+    if (!user || !(await user.checkPassword(password))) {
+      return res.status(401).json({ error: "E-mail ou senha inválidos." });
+    }
+
+    const token = jwt.sign({ id: user.id }, JWT_SECRET, {
+      expiresIn: "1d",
+    });
+
+    return res.json({
+      user: formatUserResponse(user),
+      token,
+    });
+  }
+
   async update(req, res) {
     const schema = Yup.object().shape({
       name: Yup.string().trim(),
@@ -110,9 +157,9 @@ class UserController {
       return res.status(401).json({ error: "Senha atual incorreta." });
     }
 
-    const { id, name, provider } = await user.update(req.body);
+    await user.update(req.body); 
 
-    return res.json({ id, name, email: user.email, provider });
+    return res.json(formatResponse(user));
   }
 
   async delete(req, res) {
