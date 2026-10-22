@@ -3,12 +3,9 @@ import api from '../../services/api';
 
 export default function FormDisciplina() {
   const [disciplina, setDisciplina] = useState({ nome: '', descricao: '' });
-  const [disciplinaLista, setDisciplinaLista] = useState([]);
 
   async function handleSubmit(e) {
     e.preventDefault();
-
-    setDisciplinaLista((lista) => [...lista, disciplina]);
 
     try {
       await api.post('/disciplinas', disciplina);
@@ -31,31 +28,10 @@ export default function FormDisciplina() {
 
       <form onSubmit={handleSubmit} style={{ marginBottom: '20px' }}>
         <div>
-            <label for="nome">Insira a disciplina</label>
-
-            <select>
-                <option value="Língua Portuguesa">Língua Portuguesa</option>
-                <option value="Literatura">Literatura</option>
-                <option value="Redação">Redação</option>
-                <option value="Língua Inglesa">Inglês</option>
-                <option value="Artes">Artes</option>
-                <option value="Educação Física">Educação Física</option>
-                <option value="Matemática">Matemática</option>
-                <option value="História">História</option>
-                <option value="Geografia">Geografia</option>
-                <option value="Filosofia">Filosofia</option>
-                <option value="Sociologia">Sociologia</option>
-                <option value="Biologia">Biologia</option>
-                <option value="Física">Física</option>
-                <option value="Química">Química</option>
-              {disciplinaLista.map((item, index) => (
-                <option key={`${item.nome}-${index}`} value={item.nome}>
-                  {item.nome}
-                </option>
-              ))}
-            </select>
-            <input
+          <label htmlFor="nome">Insira a disciplina</label>
+          <input
             type="text"
+            id="nome"
             name="nome"
             placeholder="Nome da disciplina"
             value={disciplina.nome}
