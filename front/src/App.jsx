@@ -1,11 +1,11 @@
 import './App.css'
 
-import FormConteudo from './components/formConteudo/formConteudo'
+import FormDisciplina from './components/formDisciplina/formDisciplina'
 
 function App() {
   return (
     <>
-      <FormConteudo />
+      <FormDisciplina />
     </>
   )
 }
