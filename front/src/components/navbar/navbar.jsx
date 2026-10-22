@@ -1,13 +1,11 @@
-import React from "react";
-
-export const Navbar = () => {
+export default function NavBar() {
   return (
     <nav>
-      <ul>
-        <li><a href="/">Página Inicial</a></li>
-        <li><a href="/about">About</a></li>
-        <li><a href="/contact">Contact</a></li>
+      <ul className="flex space-x-4 bg-gray-800 p-4 text-white">
+        <li>Home</li>
+        <li></li>
+        <li>Contact</li>
       </ul>
     </nav>
   );
-};
+}
