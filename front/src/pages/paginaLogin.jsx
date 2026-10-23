@@ -1,4 +1,4 @@
-import FormLogin from '../components/formLogin/formLogin'
+import FormLogin from '../components/formLogin'
 
 export default function PaginaLogin() {
 
