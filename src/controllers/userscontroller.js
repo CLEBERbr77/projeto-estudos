@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 
 const JWT_SECRET = process.env.JWT_SECRET || "seu_segredo_jwt";
 
+// campos publicos
 const publicFields = [
   "id",
   "name",
@@ -81,7 +82,7 @@ class UserController {
         .json({ error: "Erro ao criar usuário.", details: error.message });
     }
   }
-// método de login para a autenticação via jwt 
+// método de login para a autenticação via jwt
   async login(req, res) {
     const schema = Yup.object().shape({
       email: Yup.string().email("E-mail inválido.").required("O e-mail é obrigatório."),
@@ -157,9 +158,9 @@ class UserController {
       return res.status(401).json({ error: "Senha atual incorreta." });
     }
 
-    await user.update(req.body); 
+    await user.update(req.body);
 
-    return res.json(user);
+    return res.json(formatUserResponse(user));
   }
 
   async delete(req, res) {
