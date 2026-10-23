@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 
 const JWT_SECRET = process.env.JWT_SECRET || "seu_segredo_jwt";
 
+// campos publicos
 const publicFields = [
   "id",
   "name",
