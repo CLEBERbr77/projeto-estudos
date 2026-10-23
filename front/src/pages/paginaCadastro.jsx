@@ -1,6 +1,6 @@
 import FormCadastro from '../components/formCadastro/formCadastro'
 
-export default function paginaCadastro() {
+export default function PaginaCadastro() {
 
     return (
 
