@@ -93,7 +93,7 @@ const CountdownTimer = () => {
     <section className="mx-auto w-full max-w-2xl rounded-3xl border border-slate-200 bg-slate-50 p-6 shadow-lg shadow-slate-200/60 sm:p-8 " >
       <header className="mb-8 text-center">
         <p className="mb-2 text-sm font-semibold uppercase tracking-[0.2em] text-indigo-600">
-          Focus session
+          SESSÃO DE ESTUDO
         </p>
         <h2 className="text-3xl font-bold tracking-tight text-slate-900">
           {countdownStarted ? eventName : "Study Timer"}
@@ -113,7 +113,7 @@ const CountdownTimer = () => {
         >
           <div>
             <label htmlFor="title" className="mb-2 block text-sm font-medium text-slate-700">
-              Study goal
+              Objetivo de estudo (ex.: Revisar notas de biologia)
             </label>
           <input
             id="title"
@@ -129,7 +129,7 @@ const CountdownTimer = () => {
 
           <div>
             <label htmlFor="date-picker" className="mb-2 block text-sm font-medium text-slate-700">
-              Focus until
+              Focar até (data e hora)
             </label>
           <input
             id="date-picker"
@@ -145,7 +145,7 @@ const CountdownTimer = () => {
             type="submit"
             className="w-full rounded-xl bg-indigo-600 px-5 py-3 font-semibold text-white shadow-md shadow-indigo-200 transition hover:bg-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-200"
           >
-            Start studying
+            Iniciar estudos
           </button>
         </form>
       ) : (
@@ -164,7 +164,7 @@ const CountdownTimer = () => {
               onClick={handleResetCountdown}
               className="rounded-xl bg-slate-900 px-5 py-3 font-semibold text-white transition hover:bg-slate-700 focus:outline-none focus:ring-4 focus:ring-slate-300"
             >
-              End session
+              FIM DA SESSÃO
             </button>
           </div>
         </div>
