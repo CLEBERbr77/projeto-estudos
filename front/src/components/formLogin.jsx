@@ -24,7 +24,7 @@ export default function FormLogin() {
     return (
         <div className="grid min-h-screen bg-white lg:grid-cols-2">
             {/* painel de boas-vindas */}
-            <div className="relative hidden overflow-hidden bg-linear-to-b from-[#3349D6] to-[#0A1F4D] text-white lg:flex lg:flex-col lg:justify-center lg:px-20 lg:py-12">
+            <div className="relative hidden overflow-hidden bg-[radial-gradient(circle_at_50%_18%,rgba(191,219,254,0.75),transparent_42%),radial-gradient(ellipse_at_55%_62%,#38bdf8,transparent_58%),linear-gradient(165deg,#3349D6,#1c2aa8_55%,#141d85)] p-10 text-white lg:flex lg:flex-col lg:justify-center lg:px-20 lg:py-12">
                 {/* círculos decorativos */}
                 <div aria-hidden="true" className="pointer-events-none absolute inset-0">
                     <div className="absolute -right-24 top-16 h-[34rem] w-[34rem] rounded-full border border-white/10" />
@@ -72,7 +72,7 @@ export default function FormLogin() {
                                 Não tem uma conta?{' '}
                                 <Link
                                     to="/cadastro"
-                                    className="font-semibold text-slate-900 underline underline-offset-2 hover:text-[#3349D6]"
+                                    className="font-semibold text-[#3349D6] underline underline-offset-2 hover:text-[#3349D6]"
                                 >
                                     Crie uma agora
                                 </Link>
@@ -113,7 +113,7 @@ export default function FormLogin() {
                         </div>
 
                         <button
-                            className="w-full rounded-xl bg-[#0A1F4D] px-4 py-3.5 text-sm font-semibold text-white shadow-md shadow-[#0A1F4D]/20 transition hover:bg-[#12306e] focus:outline-none focus:ring-4 focus:ring-[#3349D6]/30 active:scale-[0.99]"
+                            className="w-full rounded-xl bg-[#3349D6] px-4 py-3.5 text-sm font-semibold text-white shadow-md shadow-[#0A1F4D]/20 transition hover:bg-[#12306e] focus:outline-none focus:ring-4 focus:ring-[#3349D6]/30 active:scale-[0.99]"
                             name="entrar"
                             type="submit"
                         >

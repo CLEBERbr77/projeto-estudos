@@ -113,13 +113,13 @@ const CountdownTimer = () => {
         >
           <div>
             <label htmlFor="title" className="mb-2 block text-sm font-medium text-slate-700">
-              Objetivo de estudo (ex.: Revisar notas de biologia)
+              Objetivo de estudo 
             </label>
           <input
             id="title"
             name="title"
             type="text"
-            placeholder="e.g. Review biology notes"
+            placeholder="ex.: Revisar notas de biologia"
             value={eventName}
             onChange={(e) => setEventName(e.target.value)}
             required
@@ -157,7 +157,7 @@ const CountdownTimer = () => {
               onClick={handleStopCountdown}
               className="rounded-xl border border-slate-300 bg-white px-5 py-3 font-semibold text-slate-700 transition hover:bg-slate-100 focus:outline-none focus:ring-4 focus:ring-slate-200"
             >
-              Pause
+              Pausa
             </button>
             <button
               type="button"
