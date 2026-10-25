@@ -11,7 +11,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <nav className="p-4 bg-white text-black flex gap-4">
-        <Link to="/" className="hover:underline">Início</Link>
+        <Link to="/paginaInicial" className="hover:underline">Início</Link>
         <Link to="/sobre" className="hover:underline">Sobre</Link>
         <Link to="/Dashboard" className="hover:underline">Dashboard</Link>
         <Link to="/setupUsuario" className="hover:underline">Setup Usuário</Link>
@@ -20,7 +20,7 @@ export default function App() {
       </nav>
 
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/paginaInicial" element={<paginaInicial />} />
         <Route path="/sobre" element={<Sobre />} />
         <Route path="/Dashboard" element={<Dashboard />} />
         <Route path="/setupUsuario" element={<SetupUsuario />} />
