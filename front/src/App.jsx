@@ -1,12 +1,13 @@
-import Header from "./components/header/header";
+import './App.css'
 
-const App = () => {
+import Timer from './components/timer/timer'
+
+function App() {
   return (
-    <div className="min-h-screen text-black">
-      <Header />
-      <main className="min-h-screen pl-20 sm:pl-64" />
-    </div>
-  );
-};
+    <>
+      <Timer />
+    </>
+  )
+}
 
-export default App;
+export default App
