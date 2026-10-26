@@ -13,7 +13,6 @@ export default function App() {
     <AuthProvider>
       <BrowserRouter>
         <Routes>
-          {/* com sidebar e header (Navbar mantida), sem restrição de login */}
           <Route element={<AppLayout />}>
             <Route path="/" element={<PaginaInicial />} />
             <Route path="/dashboard" element={<Dashboard />} />
@@ -23,10 +22,8 @@ export default function App() {
             <Route path="/sobre" element={<EmBreve titulo="Sobre" />} />
           </Route>
 
-          {/* tela cheia */}
           <Route path="/setup-usuario" element={<SetupUsuario />} />
 
-          {/* públicas */}
           <Route path="/login" element={<Login />} />
           <Route path="/cadastro" element={<Cadastro />} />
           <Route path="/recuperar-senha" element={<EmBreve titulo="Recuperar senha" tela />} />

@@ -55,9 +55,7 @@ function IconButton({ label, onClick, className = '', children }) {
     );
 }
 
-/* ---------------------------- componente ------------------------- */
-
-export default function Calendar() {
+export default function Calendario() {
     const controller = useCalendarController();
 
     // no celular, começa na lista da semana (mais legível que a grade do mês)

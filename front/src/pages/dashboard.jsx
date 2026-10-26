@@ -1,4 +1,4 @@
-import Calendar from './Calendar';
+import Calendario from './Calendario';
 import Timer from '../components/Timer';
 import TodoList from '../components/TodoList';
 
@@ -8,7 +8,7 @@ export default function Dashboard() {
             <h1 className="mb-6 text-4xl font-bold text-[#0A1F4D]">Visão Geral</h1>
 
             <div className="grid gap-6 xl:grid-cols-[1.05fr_1fr]">
-                <Calendar />
+                <Calendario />
                 <Timer />
             </div>
 
