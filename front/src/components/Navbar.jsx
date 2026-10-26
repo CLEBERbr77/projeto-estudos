@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import classmeeLogo from '../assets/classmee.svg';
+import classmeLogo from '../assets/classme.svg';
 
 const mainItems = [
   { label: 'Início', to: '/', end: true },
@@ -39,10 +39,10 @@ function Conteudo({ onNavegar }) {
       <NavLink
         to="/"
         onClick={onNavegar}
-        aria-label="Classmee, ir para o início"
+        aria-label="Classme, ir para o início"
         className="mb-6 flex w-full items-center justify-center gap-3"
       >
-        <img src={classmeeLogo} alt="Classmee" className="h-20 w-auto" />
+        <img src={classmeLogo} alt="Classme" className="h-20 w-auto" />
       </NavLink>
 
       <nav aria-label="Navegação principal" className="flex flex-1 flex-col">
