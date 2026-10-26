@@ -1,11 +1,11 @@
 const { Router } = require("express");
 const UserController = require("../controllers/userscontroller");
-const authMiddleware = require ("../src/middlewares/authMiddleware");
+const authMiddleware = require ("../middlewares/authMiddleware");
 
 const routes = new Router();
 
 routes.post("/users", UserController.store);
-
+routes.post("/login", UserController.login);
 // rotas que precisam de middleware
 
 routes.use(authMiddleware);
