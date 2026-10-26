@@ -1,19 +1,28 @@
-import { useState } from 'react';
-import api from '../services/api';
+import { useId, useState } from 'react';
+import { criar } from '../services/disciplinaService';
 
 export default function FormDisciplina() {
+  const idBase = useId();
   const [disciplina, setDisciplina] = useState({ name: '', descricao: '' });
+  const [enviando, setEnviando] = useState(false);
+  const [status, setStatus] = useState(null); // null | { tipo: 'sucesso' | 'erro', texto }
 
   async function handleSubmit(e) {
     e.preventDefault();
+    setEnviando(true);
+    setStatus(null);
 
     try {
-      await api.post('/disciplinas', disciplina);
+      await criar(disciplina);
       setDisciplina({ name: '', descricao: '' });
-      alert('Disciplina cadastrada com sucesso!');
-    } catch (error) {
-      console.error('Erro ao cadastrar disciplina:', error);
-      alert('Erro ao cadastrar disciplina.');
+      setStatus({ tipo: 'sucesso', texto: 'Disciplina cadastrada com sucesso!' });
+    } catch (err) {
+      setStatus({
+        tipo: 'erro',
+        texto: err.response?.data?.message ?? 'Não foi possível cadastrar a disciplina.',
+      });
+    } finally {
+      setEnviando(false);
     }
   }
 
@@ -31,12 +40,12 @@ export default function FormDisciplina() {
 
       <form onSubmit={handleSubmit} className="space-y-5">
         <div className="space-y-2">
-          <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+          <label htmlFor={`${idBase}-name`} className="block text-sm font-medium text-gray-700">
             Insira a disciplina
           </label>
           <input
             type="text"
-            id="name"
+            id={`${idBase}-name`}
             name="name"
             placeholder="Nome da disciplina"
             value={disciplina.name}
@@ -47,12 +56,12 @@ export default function FormDisciplina() {
         </div>
 
         <div className="space-y-2">
-          <label htmlFor="descricao" className="block text-sm font-medium text-gray-700">
+          <label htmlFor={`${idBase}-descricao`} className="block text-sm font-medium text-gray-700">
             Descrição <span className="font-normal text-gray-500">(opcional)</span>
           </label>
           <input
             type="text"
-            id="descricao"
+            id={`${idBase}-descricao`}
             name="descricao"
             placeholder="Descrição da disciplina"
             value={disciplina.descricao}
@@ -61,11 +70,21 @@ export default function FormDisciplina() {
           />
         </div>
 
+        {status && (
+          <p
+            role={status.tipo === 'erro' ? 'alert' : 'status'}
+            className={`text-sm ${status.tipo === 'erro' ? 'text-red-600' : 'text-green-700'}`}
+          >
+            {status.texto}
+          </p>
+        )}
+
         <button
           type="submit"
-          className="w-full rounded-lg bg-indigo-600 px-4 py-2.5 font-semibold text-white transition hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto"
+          disabled={enviando}
+          className="w-full rounded-lg bg-indigo-600 px-4 py-2.5 font-semibold text-white transition hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
         >
-          Cadastrar Disciplina
+          {enviando ? 'Cadastrando...' : 'Cadastrar Disciplina'}
         </button>
       </form>
     </section>

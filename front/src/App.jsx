@@ -1,32 +1,41 @@
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
-import Dashboard from './pages/dashboard'
-import SetupUsuario from './pages/setupUsuario';
-import Login from './components/formLogin'
-import FormCadastro from './components/formCadastro/formCadastro'
-
-const Home = () => <h1 className="text-2xl p-4">Página Inicial</h1>;
-const Sobre = () => <h1 className="text-2xl p-4">Página Sobre</h1>;
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import AuthProvider from './context/AuthProvider';
+import AppLayout from './components/AppLayout';
+import PaginaInicial from './pages/PaginaInicial';
+import Dashboard from './pages/Dashboard';
+import SetupUsuario from './pages/SetupUsuario';
+import Login from './pages/PaginaLogin';
+import Cadastro from './pages/PaginaCadastro';
+import EmBreve from './pages/EmBreve';
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <nav className="p-4 bg-white text-black flex gap-4">
-        <Link to="/paginaInicial" className="hover:underline">Início</Link>
-        <Link to="/sobre" className="hover:underline">Sobre</Link>
-        <Link to="/Dashboard" className="hover:underline">Dashboard</Link>
-        <Link to="/setupUsuario" className="hover:underline">Setup Usuário</Link>
-        <Link to="/login" className="hover:underline">Login</Link>
-        <Link to="/cadastro" className="hover:underline">Cadastro</Link>
-      </nav>
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          {/* com sidebar e header (Navbar mantida), sem restrição de login */}
+          <Route element={<AppLayout />}>
+            <Route path="/" element={<PaginaInicial />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/disciplinas" element={<EmBreve titulo="Disciplinas" />} />
+            <Route path="/simulados" element={<EmBreve titulo="Simulados" />} />
+            <Route path="/configuracoes" element={<EmBreve titulo="Configurações" />} />
+            <Route path="/sobre" element={<EmBreve titulo="Sobre" />} />
+          </Route>
 
-      <Routes>
-        <Route path="/paginaInicial" element={<paginaInicial />} />
-        <Route path="/sobre" element={<Sobre />} />
-        <Route path="/Dashboard" element={<Dashboard />} />
-        <Route path="/setupUsuario" element={<SetupUsuario />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/cadastro" element={<FormCadastro />} />
-      </Routes>
-    </BrowserRouter>
+          {/* tela cheia */}
+          <Route path="/setup-usuario" element={<SetupUsuario />} />
+
+          {/* públicas */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/cadastro" element={<Cadastro />} />
+          <Route path="/recuperar-senha" element={<EmBreve titulo="Recuperar senha" tela />} />
+          <Route path="/privacidade" element={<EmBreve titulo="Política de Privacidade" tela />} />
+          <Route path="/termos" element={<EmBreve titulo="Termos de Serviço" tela />} />
+
+          <Route path="*" element={<EmBreve titulo="Página não encontrada" tela />} />
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }

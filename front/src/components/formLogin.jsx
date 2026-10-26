@@ -1,21 +1,38 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
-
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { login } from '../services/authService';
+import useAuth from '../hooks/useAuth';
 
 export default function FormLogin() {
     const [credenciaisUsuario, setCredenciaisUsuario] = useState({
         usuario: '',
         password: '',
     });
+    const [erro, setErro] = useState('');
+    const [carregando, setCarregando] = useState(false);
+    const navigate = useNavigate();
+    const location = useLocation();
+    const { entrar } = useAuth();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-
         setCredenciaisUsuario((atual) => ({ ...atual, [name]: value }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
+        setErro('');
+        setCarregando(true);
+
+        try {
+            const data = await login(credenciaisUsuario);
+            entrar(data.token, data.user);
+            navigate(location.state?.de ?? '/dashboard', { replace: true });
+        } catch (err) {
+            setErro(err.response?.data?.message ?? 'Não foi possível entrar.');
+        } finally {
+            setCarregando(false);
+        }
     };
 
     const labelClasses = 'block text-sm font-medium text-slate-600';
@@ -80,6 +97,8 @@ export default function FormLogin() {
                             </p>
                         </header>
 
+                        {erro && <p role="alert" className="text-sm text-red-600">{erro}</p>}
+
                         <div>
                             <label className={labelClasses} htmlFor="usuario">
                                 E-mail ou nome de usuário
@@ -116,13 +135,16 @@ export default function FormLogin() {
                             className="w-full rounded-xl bg-[#3349D6] px-4 py-3.5 text-sm font-semibold text-white shadow-md shadow-[#0A1F4D]/20 transition hover:bg-[#12306e] focus:outline-none focus:ring-4 focus:ring-[#3349D6]/30 active:scale-[0.99]"
                             name="entrar"
                             type="submit"
+                            disabled={carregando}
                         >
-                            Entrar
+                            {carregando ? 'Entrando...' : 'Entrar'}
                         </button>
 
                         <button
                             className="flex w-full items-center justify-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-sm font-semibold text-slate-900 shadow-sm transition hover:bg-slate-50 focus:outline-none focus:ring-4 focus:ring-slate-200"
                             type="button"
+                            disabled
+                            title="Em breve"
                         >
                             <svg aria-hidden="true" viewBox="0 0 48 48" className="h-5 w-5">
                                 <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z" />

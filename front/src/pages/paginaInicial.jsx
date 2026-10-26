@@ -1,9 +1,5 @@
-import Inicio from '../components/paginaInicial';
+import Inicio from '../components/Inicio';
 
 export default function PaginaInicial() {
-    return (
-        <div>
-            <Inicio />
-        </div>
-    )
+  return <Inicio />;
 }

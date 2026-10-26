@@ -12,10 +12,10 @@ import '@fullcalendar/react/skeleton.css'; // sempre necessário
 import '@fullcalendar/react/themes/monarch/theme.css';
 import '@fullcalendar/react/themes/monarch/palettes/purple.css';
 
-import EventModal from '../components/EventModal/eventmodal';
+import EventModal from '../components/EventModal';
+import { atualizar, criar, listar, remover } from '../services/eventService';
 
 const PLUGINS = [themePlugin, dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin];
-const STORAGE_KEY = 'classme:events';
 
 const VIEWS = [
     { type: 'dayGridMonth', label: 'Mês' },
@@ -25,19 +25,6 @@ const VIEWS = [
 ];
 
 /* ---------------------------- helpers ---------------------------- */
-
-function loadEvents() {
-    try {
-        const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
-        return Array.isArray(saved) ? saved : [];
-    } catch {
-        return [];
-    }
-}
-
-function newId() {
-    return globalThis.crypto?.randomUUID?.() ?? String(Date.now() + Math.random());
-}
 
 // 'YYYY-MM-DD' (ou 'YYYY-MM-DDTHH:mm') -> { date, time }
 function splitDateStr(str) {
@@ -78,21 +65,34 @@ export default function Calendar() {
         window.matchMedia('(max-width: 639px)').matches ? 'listWeek' : 'dayGridMonth'
     );
 
-    const [events, setEvents] = useState(loadEvents);
+    const [events, setEvents] = useState([]);
     const [modal, setModal] = useState(null); // null | { id?, title, date, time }
+    const [erroLista, setErroLista] = useState('');
+    const [erroModal, setErroModal] = useState('');
+    const [salvando, setSalvando] = useState(false);
 
+    // carrega os eventos do backend
     useEffect(() => {
-        try {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(events));
-        } catch {
-            /* armazenamento indisponível: segue só em memória */
-        }
-    }, [events]);
+        let cancelado = false;
+
+        listar()
+            .then((lista) => {
+                if (!cancelado) setEvents(lista);
+            })
+            .catch(() => {
+                if (!cancelado) setErroLista('Não foi possível carregar os eventos.');
+            });
+
+        return () => {
+            cancelado = true;
+        };
+    }, []);
 
     /* ---- interações do calendário ---- */
 
     const handleDateClick = useCallback((info) => {
         const { date, time } = splitDateStr(info.dateStr);
+        setErroModal('');
         setModal({ title: '', date, time });
     }, []);
 
@@ -101,29 +101,51 @@ export default function Calendar() {
             const found = events.find((ev) => ev.id === info.event.id);
             if (!found) return;
             const { date, time } = splitDateStr(found.start);
-            setModal({ id: found.id, title: found.title, date, time });
+            setErroModal('');
+            setModal({ id: found.id, title: found.title, date, time: found.allDay ? '' : time });
         },
         [events]
     );
 
     /* ---- salvar / excluir ---- */
 
-    function saveEvent({ id, title, date, time }) {
+    async function saveEvent({ id, title, date, time }) {
         const start = time ? `${date}T${time}` : date;
         const data = { title, start, allDay: !time };
 
-        setEvents((list) =>
-            id
-                ? list.map((ev) => (ev.id === id ? { ...ev, ...data } : ev))
-                : [...list, { id: newId(), ...data }]
-        );
-        setModal(null);
+        setSalvando(true);
+        setErroModal('');
+        try {
+            if (id) {
+                const atualizado = await atualizar(id, data);
+                setEvents((list) => list.map((ev) => (ev.id === id ? atualizado : ev)));
+            } else {
+                const novo = await criar(data);
+                setEvents((list) => [...list, novo]);
+            }
+            setModal(null);
+        } catch {
+            setErroModal('Não foi possível salvar o evento. Tente novamente.');
+        } finally {
+            setSalvando(false);
+        }
     }
 
-    function deleteEvent(id) {
-        setEvents((list) => list.filter((ev) => ev.id !== id));
-        setModal(null);
+    async function deleteEvent(id) {
+        setSalvando(true);
+        setErroModal('');
+        try {
+            await remover(id);
+            setEvents((list) => list.filter((ev) => ev.id !== id));
+            setModal(null);
+        } catch {
+            setErroModal('Não foi possível excluir o evento. Tente novamente.');
+        } finally {
+            setSalvando(false);
+        }
     }
+
+    const fecharModal = useCallback(() => setModal(null), []);
 
     const activeView = controller.view?.type;
 
@@ -196,6 +218,12 @@ export default function Calendar() {
                 </button>
             </div>
 
+            {erroLista && (
+                <p role="alert" className="mb-4 rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">
+                    {erroLista}
+                </p>
+            )}
+
             <FullCalendar
                 controller={controller}
                 plugins={PLUGINS}
@@ -218,7 +246,9 @@ export default function Calendar() {
                     initial={modal}
                     onSave={saveEvent}
                     onDelete={deleteEvent}
-                    onClose={() => setModal(null)}
+                    onClose={fecharModal}
+                    erro={erroModal}
+                    salvando={salvando}
                 />
             )}
         </section>
