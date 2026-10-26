@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import classmeeLogo from '../assets/classmee.svg';
 
@@ -7,6 +7,8 @@ const mainItems = [
   { label: 'Visão Geral', to: '/dashboard' },
   { label: 'Disciplinas', to: '/disciplinas' },
   { label: 'Simulados', to: '/simulados' },
+  { label: 'Login', to: '/login' },
+  { label: 'Cadastro', to: '/Cadastro' },
 ];
 
 const siteItems = [
@@ -60,33 +62,64 @@ function Conteudo({ onNavegar }) {
   );
 }
 
-export default function Navbar({ aberto = false, onFechar = () => {} }) {
-  // fecha a gaveta com Esc
+export default function Navbar({ aberto = false, onFechar = () => {}, onAbrir = () => {} }) {
+  const [menuInterno, setMenuInterno] = useState(false);
+  const menuAberto = aberto || menuInterno;
+
+  const fecharMenu = () => {
+    setMenuInterno(false);
+    onFechar();
+  };
+
+  const abrirMenu = () => {
+    setMenuInterno(true);
+    onAbrir();
+  };
+
   useEffect(() => {
-    if (!aberto) return;
-    const onKey = (e) => e.key === 'Escape' && onFechar();
+    if (!menuAberto) return;
+    const onKey = (e) => e.key === 'Escape' && fecharMenu();
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [aberto, onFechar]);
+  }, [menuAberto, onFechar]);
 
   return (
     <>
+      {!menuAberto && (
+        <button
+          type="button"
+          onClick={abrirMenu}
+          aria-label="Abrir menu"
+          className="fixed left-4 top-4 z-30 rounded-lg bg-navy p-3 text-white lg:hidden"
+        >
+          <span aria-hidden="true">☰</span>
+        </button>
+      )}
+
       {/* desktop: barra lateral fixa */}
-      <aside className="hidden w-72 shrink-0 overflow-y-auto bg-[#0A1F4D] p-6 text-white lg:flex lg:flex-col">
+      <aside className="hidden w-72 shrink-0 overflow-y-auto bg-navy p-6 text-white lg:flex lg:flex-col">
         <Conteudo />
       </aside>
 
       {/* celular: gaveta */}
-      {aberto && (
+      {menuAberto && (
         <div className="fixed inset-0 z-40 lg:hidden">
-          <div className="absolute inset-0 bg-slate-900/50" onClick={onFechar} aria-hidden="true" />
+          <div className="absolute inset-0 bg-slate-900/50" onClick={fecharMenu} aria-hidden="true" />
           <aside
             role="dialog"
             aria-modal="true"
             aria-label="Menu"
-            className="absolute inset-y-0 left-0 flex w-72 max-w-[85vw] flex-col overflow-y-auto bg-[#0A1F4D] p-6 text-white shadow-2xl"
+            className="absolute inset-y-0 left-0 flex w-72 max-w-[85vw] flex-col overflow-y-auto bg-navy p-6 text-white shadow-2xl"
           >
-            <Conteudo onNavegar={onFechar} />
+            <button
+              type="button"
+              onClick={fecharMenu}
+              aria-label="Fechar menu"
+              className="mb-4 self-end rounded-lg p-2 text-white hover:bg-white/10"
+            >
+              <span aria-hidden="true">✕</span>
+            </button>
+            <Conteudo onNavegar={fecharMenu} />
           </aside>
         </div>
       )}
