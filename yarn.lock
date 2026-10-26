@@ -824,6 +824,16 @@ raw-body@^3.0.2:
     iconv-lite "~0.7.0"
     unpipe "~1.0.0"
 
+react-timer-hook@^4.0.9:
+  version "4.0.9"
+  resolved "https://registry.npmjs.org/react-timer-hook/-/react-timer-hook-4.0.9.tgz"
+  integrity sha512-8k/X9pQ3XzuCdCBvPUCpBwOJFP2U5yW9NWjJJGi80mMKyK0IQYfeAKVrGibmSQB88N4qj14t9ABm1Rph5+EZjQ==
+
+react@>=16.8.0:
+  version "19.3.1"
+  resolved "https://registry.npmjs.org/react/-/react-19.3.1.tgz"
+  integrity sha512-QNhWdt7nrgVWWQG58QuGsAR3jv3Hbe4mb4vz7w2csnHavciZJgda1CPNaldF6eVxv90ud3jUXpKlHL69gO38yw==
+
 require-directory@^2.1.1:
   version "2.1.1"
   resolved "https://registry.npmjs.org/require-directory/-/require-directory-2.1.1.tgz"
