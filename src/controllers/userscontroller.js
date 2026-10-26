@@ -2,7 +2,7 @@ const Yup = require("yup");
 const User = require("../models/user");
 const jwt = require("jsonwebtoken");
 
-const JWT_SECRET = process.env.JWT_SECRET || "seu_segredo_jwt";
+const JWT_SECRET = require("../config/jwt");
 
 // campos publicos
 const publicFields = [
